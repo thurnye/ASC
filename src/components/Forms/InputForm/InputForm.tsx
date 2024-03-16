@@ -7,11 +7,12 @@ import Typography from '@mui/material/Typography';
 interface InputFormProps {
   label?: string;
   placeholder?: string;
+  getValue: (val:string) => void;
+  value:string
 }
 
 const InputForm: FC<InputFormProps> = (props : InputFormProps) => {
-  const  {label, placeholder} = props
-  const [name, setName] = React.useState('');
+  const  {label, placeholder, getValue, value} = props
   return(
   <div className={styles.InputForm}>
     <Box
@@ -27,9 +28,9 @@ const InputForm: FC<InputFormProps> = (props : InputFormProps) => {
         id="outlined-basic" 
         variant="outlined" 
         size="small" 
-        value={name}
+        value={value}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          setName(event.target.value);
+          getValue(event.target.value);
         }}
         placeholder={placeholder && placeholder}
       />

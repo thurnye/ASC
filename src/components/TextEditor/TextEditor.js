@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack';
 
 const apiKey="3qjuzznxv7sdmqriojmkxuz5wtx9m02n4b29csbvacw3ky76";
 
-const TextEditor = ({getContents}) => {
+const TextEditor = ({getContents, defaultValue}) => {
   const editorRef = useRef(null);
 
   const log = () => {
@@ -23,7 +23,7 @@ const TextEditor = ({getContents}) => {
     <Editor
         apiKey={apiKey}
         onInit={(evt, editor) => editorRef.current = editor}
-        initialValue='<p>This is the initial content of the editor.</p>'
+        initialValue={defaultValue}
         init={{
           height: '100%',
           menubar: true,
@@ -42,8 +42,9 @@ const TextEditor = ({getContents}) => {
               font-size:14px,  
             }`
         }}
+        onChange={() => getContents(editorRef.current.getContent())}
       />
-      <Box sx={{mt: 3, width: '100%', textAlign: 'end'}}>
+      {/* <Box sx={{mt: 3, width: '100%', textAlign: 'end'}}>
         
         <ASCButton
           fullWidth={false}
@@ -56,7 +57,7 @@ const TextEditor = ({getContents}) => {
           width={'initial'}
         />
 
-      </Box>
+      </Box> */}
       {/* {parser(editorRef?.current?.getContent())} */}
   </>
 )};

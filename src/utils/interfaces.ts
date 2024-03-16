@@ -3,3 +3,6 @@ export interface ListItemsProps {
   label: string,
   value: string
 };
+export interface selectedListItem {
+  id:number, type: string
+};

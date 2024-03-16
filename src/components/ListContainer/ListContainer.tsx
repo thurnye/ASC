@@ -11,7 +11,7 @@ import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import { getRandomInt } from '../../utils/commons';
-import {ListItemsProps} from '../../utils/interfaces'
+import {ListItemsProps, selectedListItem} from '../../utils/interfaces'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
@@ -19,7 +19,7 @@ interface ListContainerProps {
   icons?: string[];
   listItems?: ListItemsProps[];
   getSelectedValues?: (selected: ListItemsProps[] | undefined) => void;
-  getSelectId?: (selected: number | undefined) => void;
+  getSelectId?: ( selected : selectedListItem | undefined) => void;
   height?: number;
   size?: number;
   border?: boolean;
@@ -55,7 +55,7 @@ const ListContainer: FC<ListContainerProps> = (props: ListContainerProps) => {
             key="edit" 
             edge="end" 
             aria-label="edit" 
-            onClick={() => getSelectId && getSelectId(id)}
+            onClick={() => getSelectId && getSelectId({id, type: 'edit'})}
             
             >
               <EditOutlinedIcon sx={{fontSize: 20, mr: 0.3, color:"#375EA2"}}/>
@@ -67,7 +67,7 @@ const ListContainer: FC<ListContainerProps> = (props: ListContainerProps) => {
             key="delete" 
             edge="end" 
             aria-label="delete" 
-            onClick={() => getSelectId && getSelectId(id)}
+            onClick={() => getSelectId && getSelectId({id, type: 'delete'})}
             >
               <DeleteOutlinedIcon sx={{fontSize: 20}} color="error"/>
             </IconButton>
