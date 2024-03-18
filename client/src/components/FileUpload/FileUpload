@@ -1,0 +1,92 @@
+import React, { FC, useState } from 'react';
+import styles from './FileUpload.module.scss';
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import TextEditor from '../TextEditor/TextEditor';
+import { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist';
+import * as pdfjsLib from 'pdfjs-dist';
+import { TextContent } from 'pdfjs-dist/types/src/display/api';
+import { asBlob } from 'html-docx-js-typescript'
+interface FileUploadProps {}
+
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+});
+
+const FileUpload: FC<FileUploadProps> = () => {
+  const [wordContent, setWordContent] = useState<string>('');
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      const file = event.target.files?.[0];
+      if (file) {
+        const htmlContent = await convertPdfToHtml(file);
+        setWordContent(htmlContent);
+      }
+    } catch (error) {
+      console.error('Error handling file change:', error);
+    }
+  };
+
+  const convertPdfToHtml = async (pdfFile: File): Promise<string> => {
+    try {
+      const loadingTask = pdfjsLib.getDocument({ data: await pdfFile.arrayBuffer() });
+      const pdf: PDFDocumentProxy = await loadingTask.promise;
+      const numPages = pdf.numPages;
+      let htmlContent = '';
+      for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+        const page: PDFPageProxy = await pdf.getPage(pageNum);
+        const pageContent = await page.getTextContent();
+        const pageText = extractTextFromPage(pageContent);
+        htmlContent += `<div style="page-break-before: always">${pageText}</div>`;
+      }
+      return htmlContent;
+    } catch (error) {
+      console.error('Error converting PDF to HTML:', error);
+      throw error;
+    }
+  };
+
+  const extractTextFromPage = (textContent: TextContent): string => {
+    let text = '';
+    textContent.items.forEach((item: any) => {
+      if (item.str) {
+        text += item.str + ' ';
+      }
+    });
+    return text.trim();
+  };
+
+  return (
+    <div className={styles.FileUpload}>
+      <Box sx={{ m: 5 }}>
+        <Button
+          component="label"
+          role={undefined}
+          variant="contained"
+          tabIndex={-1}
+          startIcon={<CloudUploadIcon />}
+        >
+          Upload file
+          <VisuallyHiddenInput type="file" onChange={handleFileChange} accept="application/pdf" />
+        </Button>
+      </Box>
+      <Box sx={{ mt: 3, height: '75vh' }}>
+        {/* <TextEditor defaultValue={wordContent} /> */}
+        <TextEditor getContents={setWordContent} defaultValue={wordContent}/>
+      </Box>
+    </div>
+  );
+};
+
+export default FileUpload;
