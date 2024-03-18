@@ -8,7 +8,13 @@ import CardWrapper from '../../layout/cardWrapper/cardWrapper';
 interface PreviewContentsProps {}
 
 const PreviewContents: FC<PreviewContentsProps> = () => {
-  const [editorContents, setEditorContents] = useState()
+  const [editorContents, setEditorContents] = useState();
+
+  const handleSave = () => {
+    console.log(editorContents); 
+  };
+
+
   return (
   <div className={styles.PreviewContents}>
     <Stack spacing={2} direction="row">
@@ -35,8 +41,21 @@ const PreviewContents: FC<PreviewContentsProps> = () => {
     </Stack>
 
     <Box sx={{mt: 3, height: '75vh'}}>
-      <TextEditor getContents={setEditorContents}/>
+      <TextEditor getContents={setEditorContents} defaultValue={editorContents}/>
     </Box>
+    <Box sx={{mt: 3, width: '100%', textAlign: 'end'}}>
+        <ASCButton
+          fullWidth={false}
+          variant="contained" 
+          label={"Save"} 
+          backgroundColor={'#375EA2'}
+          hoverBackgroundColor={'#375EA2'}
+          onClick={handleSave}
+          height={'initial'}
+          width={'initial'}
+        />
+
+      </Box>
   </div>
 )};
 
