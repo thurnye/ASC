@@ -14,10 +14,11 @@ interface AscDialogProps {
   size?: Breakpoint;
   saveText?: string;
   saveColor?: 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning';
+  showSave?: boolean
 }
 
 const AscDialog: FC<AscDialogProps> = (props: AscDialogProps ) => {
-  const {open, setOpen, children, onSave, size, saveText, saveColor} = props;
+  const {open, setOpen, children, onSave, size, saveText, saveColor, showSave=true} = props;
 
 
   return(
@@ -33,7 +34,7 @@ const AscDialog: FC<AscDialogProps> = (props: AscDialogProps ) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(!open)} sx={{textTransform: 'none'}}>Cancel</Button>
-          <Button onClick={ onSave && onSave} sx={{textTransform: 'none'}} color={saveColor && saveColor}>{saveText ? saveText : 'Save'}</Button>
+          {showSave && <Button onClick={ onSave && onSave} sx={{textTransform: 'none'}} color={saveColor && saveColor}>{saveText ? saveText : 'Save'}</Button>}
         </DialogActions>
       </Dialog>
   </div>

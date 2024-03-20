@@ -1,15 +1,16 @@
 import React from 'react';
-import {BrowserRouter, Routes, Route} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './App.scss';
-import Main from './pages/main/main'
-import NavBar from './components/navBar/navBar'
+import Main from './pages/main/main';
 import { styled } from '@mui/material/styles';
 import { MaterialDesignContent, SnackbarProvider } from 'notistack';
+import DashboardContainer from './pages/DashboardContainer/DashboardContainer';
+import AppContainer from './pages/AppContainer/AppContainer';
 
 const StyledMaterialDesignContent = styled(MaterialDesignContent)(() => ({
   '&.notistack-MuiContent-success': {
     backgroundColor: '#EDF7ED',
-    color: '#284E2A'
+    color: '#284E2A',
   },
   '&.notistack-MuiContent-error': {
     backgroundColor: '#FDEDED',
@@ -27,24 +28,27 @@ const StyledMaterialDesignContent = styled(MaterialDesignContent)(() => ({
 
 function App() {
   return (
-    <SnackbarProvider 
-    maxSnack={3} 
-    anchorOrigin={{
-      vertical: 'top',
-      horizontal: 'right',
-    }}
-    Components={{
-      success: StyledMaterialDesignContent,
-      error: StyledMaterialDesignContent,
-      warning: StyledMaterialDesignContent,
-      info: StyledMaterialDesignContent,
-    }}
+    <SnackbarProvider
+      maxSnack={3}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      Components={{
+        success: StyledMaterialDesignContent,
+        error: StyledMaterialDesignContent,
+        warning: StyledMaterialDesignContent,
+        info: StyledMaterialDesignContent,
+      }}
     >
-      <div className="App">
+      <div className='App'>
         <BrowserRouter>
-        <NavBar/>
           <Routes>
-            <Route path="/"  element={<Main/>} />
+            <Route path='/' element={<AppContainer />}>
+              <Route path='dashboard' element={<DashboardContainer />} />
+              <Route path='document' element={<Main />} />
+              <Route index element={<Navigate to='dashboard' />}></Route>
+            </Route>
           </Routes>
         </BrowserRouter>
       </div>

@@ -15,7 +15,9 @@ const ColorButton = styled(Button)(({ theme, backgroundColor, hoverBackgroundCol
   },
 }));
 
-export default function ASCButton({ label, variant, backgroundColor, onClick, fullWidth, height, width, hoverBackgroundColor }) {
+export default function ASCButton({ 
+  sx={}, label, variant, backgroundColor, onClick, fullWidth, height, width, hoverBackgroundColor, disabled=false 
+}) {
   return (
         <ColorButton 
           variant={variant}
@@ -23,8 +25,8 @@ export default function ASCButton({ label, variant, backgroundColor, onClick, fu
           hoverBackgroundColor={hoverBackgroundColor}
           onClick={onClick}
           fullWidth={fullWidth}
-          height={height}
-          width={width}
+          sx={sx}
+          disabled={disabled}
           >
           {label}
         </ColorButton>

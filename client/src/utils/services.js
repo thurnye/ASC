@@ -29,8 +29,8 @@ class StuffDataService {
     return http.post("/document", data);
   }
   //read all
-  getDocuments() {
-    return http.get(`/document/all`);
+  getDocuments(id) {
+    return http.get(`/document/all/${id}`);
   }
   //read one
   getDocument(id) {
